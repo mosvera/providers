@@ -27,6 +27,16 @@ describe("Runway adapters", () => {
     expect(Object.keys(video.payload)).toEqual(Object.keys(video.payload).sort());
   });
 
+  it("keeps user prompt text first while appending Mosvera aesthetic direction", () => {
+    const image = runwayGen4ImageAdapter.emit(canonical, { providerOptions: { prompt_text: "A warm product still life." } });
+    const video = runwayGen45VideoAdapter.emit(canonical, { providerOptions: { prompt_text: "A card slowly tilts.", duration: 5 } });
+
+    expect(image.payload.promptText).toContain("A warm product still life.\n\nMosvera aesthetic direction:");
+    expect(image.payload.promptText).toContain("editorial photo");
+    expect(video.payload.promptText).toContain("A card slowly tilts.\n\nMosvera aesthetic direction:");
+    expect(video.payload.promptText).toContain("gentle camera movement");
+  });
+
   it("executes image tasks as artifact URLs", async () => {
     vi.stubEnv("RUNWAY_API_KEY", "test-key");
     vi.stubGlobal(

@@ -12,3 +12,8 @@ Runway provider adapters for Mosvera.
 
 `emit()` is deterministic and performs no network calls. `execute()` is
 optional and reads `RUNWAY_API_KEY`.
+
+When `providerOptions.prompt_text` is supplied, the adapter keeps that prompt
+first and appends a deterministic `Mosvera aesthetic direction:` block so the
+user's requested subject survives while the selected aesthetic still affects
+the provider payload.

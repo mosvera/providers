@@ -37,6 +37,18 @@ describe("Google adapters", () => {
     expect(JSON.stringify(googleVeoVideoAdapter.emit(canonical))).toBe(JSON.stringify(googleVeoVideoAdapter.emit(canonical)));
   });
 
+  it("keeps user prompts first while appending Mosvera aesthetic direction", () => {
+    const image = googleGeminiImageAdapter.emit(canonical, { providerOptions: { prompt: "A friendly clay builder desk." } });
+    const video = googleVeoVideoAdapter.emit(canonical, { providerOptions: { prompt: "A clay tile rotates.", duration_seconds: 5 } });
+
+    const imageText = image.payload.contents as Array<{ parts: Array<{ text: string }> }>;
+    const videoInstances = video.payload.instances as Array<{ prompt: string }>;
+    expect(imageText[0]?.parts[0]?.text).toContain("A friendly clay builder desk.\n\nMosvera aesthetic direction:");
+    expect(imageText[0]?.parts[0]?.text).toContain("claymation style");
+    expect(videoInstances[0]?.prompt).toContain("A clay tile rotates.\n\nMosvera aesthetic direction:");
+    expect(videoInstances[0]?.prompt).toContain("bouncy camera and body movement");
+  });
+
   it("executes Gemini image responses with inline image data", async () => {
     vi.stubEnv("GOOGLE_GEMINI_API_KEY", "test-key");
     vi.stubGlobal(

@@ -48,6 +48,12 @@ function optionString(record: ProviderPayload, key: string): string | undefined 
   return typeof value === "string" && value.length > 0 ? value : undefined;
 }
 
+function combinedPrompt(userPrompt: string | undefined, mosveraPrompt: string): string {
+  if (userPrompt === undefined) return mosveraPrompt;
+  if (mosveraPrompt.length === 0) return userPrompt;
+  return `${userPrompt}\n\nMosvera aesthetic direction: ${mosveraPrompt}`;
+}
+
 function stable(value: unknown): unknown {
   if (Array.isArray(value)) return value.map(stable);
   if (isRecord(value)) {
@@ -136,7 +142,7 @@ export class FireflyImageAdapter extends BaseAdapter {
   buildPayload(parameters: ProviderPayload, prompt: string, options?: EmitOptions): ProviderPayload {
     const providerOptions = options?.providerOptions ?? {};
     const payload: ProviderPayload = {
-      prompt: optionString(providerOptions, "prompt") ?? prompt,
+      prompt: combinedPrompt(optionString(providerOptions, "prompt"), prompt),
       aspectRatio: optionString(providerOptions, "aspect_ratio") ?? optionString(parameters, "aspectRatio") ?? "16:9",
       modelId: optionString(providerOptions, "model_id") ?? "firefly_image",
       numVariations: 1,

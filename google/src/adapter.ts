@@ -71,6 +71,12 @@ function optionArray(record: ProviderPayload, key: string): unknown[] | undefine
   return Array.isArray(value) ? value : undefined;
 }
 
+function combinedPrompt(userPrompt: string | undefined, mosveraPrompt: string): string {
+  if (userPrompt === undefined) return mosveraPrompt;
+  if (mosveraPrompt.length === 0) return userPrompt;
+  return `${userPrompt}\n\nMosvera aesthetic direction: ${mosveraPrompt}`;
+}
+
 function stable(value: unknown): unknown {
   if (Array.isArray(value)) return value.map(stable);
   if (isRecord(value)) {
@@ -181,7 +187,7 @@ export class GoogleGeminiImageAdapter extends BaseAdapter {
     if (aspectRatio !== undefined) config.imageConfig = { aspectRatio };
     const payload: ProviderPayload = {
       model: optionString(providerOptions, "model") ?? "gemini-3.1-flash-image-preview",
-      contents: [{ parts: [{ text: optionString(providerOptions, "prompt") ?? prompt }] }],
+      contents: [{ parts: [{ text: combinedPrompt(optionString(providerOptions, "prompt"), prompt) }] }],
       generationConfig: config,
     };
     const referenceImages = optionArray(providerOptions, "reference_images");
@@ -248,7 +254,7 @@ export class GoogleVeoVideoAdapter extends BaseAdapter {
     if (duration !== undefined) parametersOut.durationSeconds = veoDurationSeconds(duration);
     return sortedPayload({
       model: optionString(providerOptions, "model") ?? "veo-3.1-generate-preview",
-      instances: [{ prompt: optionString(providerOptions, "prompt") ?? prompt }],
+      instances: [{ prompt: combinedPrompt(optionString(providerOptions, "prompt"), prompt) }],
       parameters: parametersOut,
     });
   }

@@ -26,6 +26,20 @@ describe("MeshyTextTo3DAdapter", () => {
     });
   });
 
+  it("keeps user prompt text first while appending Mosvera aesthetic direction", () => {
+    const emission = meshyTextTo3DAdapter.emit(
+      {
+        subject: "a clay Mosvera block mascot",
+        medium: "claymation",
+        palette: { accent: "#d45f3f" },
+      },
+      { providerOptions: { prompt: "Simple rounded clay cube, no text." } },
+    );
+
+    expect(emission.payload.prompt).toContain("Simple rounded clay cube, no text.\n\nMosvera aesthetic direction:");
+    expect(emission.payload.prompt).toContain("claymation 3D asset style");
+  });
+
   it("executes and polls for 3D model artifacts", async () => {
     vi.stubEnv("MESHY_API_KEY", "test-key");
     vi.stubGlobal(

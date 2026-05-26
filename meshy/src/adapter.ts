@@ -24,6 +24,12 @@ function optionString(record: ProviderPayload, key: string): string | undefined 
   return typeof value === "string" && value.length > 0 ? value : undefined;
 }
 
+function combinedPrompt(userPrompt: string | undefined, mosveraPrompt: string): string {
+  if (userPrompt === undefined) return mosveraPrompt;
+  if (mosveraPrompt.length === 0) return userPrompt;
+  return `${userPrompt}\n\nMosvera aesthetic direction: ${mosveraPrompt}`;
+}
+
 function stable(value: unknown): unknown {
   if (Array.isArray(value)) return value.map(stable);
   if (isRecord(value)) {
@@ -115,7 +121,7 @@ export class MeshyTextTo3DAdapter extends BaseAdapter {
     const providerOptions = options?.providerOptions ?? {};
     const payload: ProviderPayload = {
       mode: optionString(providerOptions, "mode") ?? "preview",
-      prompt: optionString(providerOptions, "prompt") ?? prompt,
+      prompt: combinedPrompt(optionString(providerOptions, "prompt"), prompt),
       art_style: optionString(providerOptions, "art_style") ?? "realistic",
       target_formats: Array.isArray(providerOptions.target_formats) ? providerOptions.target_formats : ["glb"],
     };

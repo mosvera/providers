@@ -56,6 +56,14 @@ The deterministic boundary is `emit()`: same canonical composition, adapter,
 and manifest produce byte-identical payloads. `execute()` is the
 non-deterministic provider network boundary.
 
+Prompt-like provider options are treated as user intent, not as replacements
+for Mosvera. For prompt-only surfaces, adapters keep the supplied
+`providerOptions.prompt` or `providerOptions.prompt_text` first and append a
+`Mosvera aesthetic direction:` block compiled from the resolved aesthetic. For
+speech/avatar surfaces, adapters keep user content fields such as `text` or
+`script` as the spoken script and carry aesthetic direction through provider
+style/motion fields where available.
+
 ## Testing
 
 From the repository root:

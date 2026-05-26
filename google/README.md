@@ -16,3 +16,8 @@ optional and reads `GOOGLE_GEMINI_API_KEY` or `GOOGLE_API_KEY`.
 Provider execution options such as model overrides, reference images, and
 video duration are passed through adapter options; they are not stored in
 Mosvera documents.
+
+When `providerOptions.prompt` is supplied, the adapter keeps that prompt first
+and appends a deterministic `Mosvera aesthetic direction:` block so the user's
+requested subject survives while the selected aesthetic still affects the
+provider payload.

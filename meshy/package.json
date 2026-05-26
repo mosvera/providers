@@ -1,6 +1,6 @@
 {
   "name": "@mosvera/provider-meshy",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Translate resolved Mosvera aesthetics into Meshy text-to-3D payloads.",
   "license": "Apache-2.0",
   "type": "module",
@@ -49,8 +49,8 @@
     "node": ">=20"
   },
   "dependencies": {
-    "@mosvera/runtime": "^0.1.2",
-    "@mosvera/provider-base": "^0.1.3"
+    "@mosvera/provider-base": "^0.1.3",
+    "@mosvera/runtime": "^0.1.2"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",

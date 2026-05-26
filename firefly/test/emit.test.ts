@@ -25,6 +25,20 @@ describe("FireflyImageAdapter", () => {
     });
   });
 
+  it("keeps user prompt text first while appending Mosvera aesthetic direction", () => {
+    const emission = fireflyImageAdapter.emit(
+      {
+        subject: "an editorial product still life",
+        medium: "photographic",
+        palette: { accent: "#d45f3f" },
+      },
+      { providerOptions: { prompt: "A friendly clay builder desk." } },
+    );
+
+    expect(emission.payload.prompt).toContain("A friendly clay builder desk.\n\nMosvera aesthetic direction:");
+    expect(emission.payload.prompt).toContain("photographic style");
+  });
+
   it("executes with a provided access token and returns image artifacts", async () => {
     vi.stubEnv("FIREFLY_SERVICES_CLIENT_ID", "client-id");
     vi.stubEnv("FIREFLY_ACCESS_TOKEN", "access-token");

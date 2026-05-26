@@ -55,6 +55,12 @@ function optionNumber(record: ProviderPayload, key: string): number | undefined 
   return typeof value === "number" && Number.isFinite(value) ? value : undefined;
 }
 
+function combinedPrompt(userPrompt: string | undefined, mosveraPrompt: string): string {
+  if (userPrompt === undefined) return mosveraPrompt;
+  if (mosveraPrompt.length === 0) return userPrompt;
+  return `${userPrompt}\n\nMosvera aesthetic direction: ${mosveraPrompt}`;
+}
+
 function stable(value: unknown): unknown {
   if (Array.isArray(value)) return value.map(stable);
   if (isRecord(value)) {
@@ -177,7 +183,7 @@ export class RunwayGen4ImageAdapter extends BaseAdapter {
     const providerOptions = options?.providerOptions ?? {};
     const payload: ProviderPayload = {
       model: optionString(providerOptions, "model") ?? "gen4_image",
-      promptText: optionString(providerOptions, "prompt_text") ?? prompt,
+      promptText: combinedPrompt(optionString(providerOptions, "prompt_text"), prompt),
       ratio: optionString(providerOptions, "ratio") ?? optionString(parameters, "ratio") ?? "1920:1080",
     };
     const referenceImages = providerOptions.reference_images;
@@ -221,7 +227,7 @@ export class RunwayGen45VideoAdapter extends BaseAdapter {
     const duration = Math.min(Math.max(optionNumber(providerOptions, "duration") ?? 5, 1), 10);
     const payload: ProviderPayload = {
       model: optionString(providerOptions, "model") ?? "gen4.5",
-      promptText: optionString(providerOptions, "prompt_text") ?? prompt,
+      promptText: combinedPrompt(optionString(providerOptions, "prompt_text"), prompt),
       ratio: optionString(providerOptions, "ratio") ?? optionString(parameters, "ratio") ?? "1280:720",
       duration,
     };
