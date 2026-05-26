@@ -27,6 +27,33 @@ describe("ElevenLabsTtsAdapter", () => {
     });
   });
 
+  it("uses explicit script text when supplied as provider options", () => {
+    const emission = elevenLabsTtsAdapter.emit(
+      {
+        voice: { headline: "Aesthetic-derived fallback." },
+        motion: { pace: "warm" },
+      },
+      { providerOptions: { voice_id: "voice-demo", script: "Welcome to Mosvera. This is a compile-only smoke test." } },
+    );
+
+    expect(emission.payload).toMatchObject({
+      text: "Welcome to Mosvera. This is a compile-only smoke test.",
+      voice_id: "voice-demo",
+    });
+  });
+
+  it("lets explicit text override the script alias", () => {
+    const emission = elevenLabsTtsAdapter.emit(
+      { voice: { headline: "Aesthetic-derived fallback." } },
+      { providerOptions: { voice_id: "voice-demo", script: "Script alias.", text: "Text wins." } },
+    );
+
+    expect(emission.payload).toMatchObject({
+      text: "Text wins.",
+      voice_id: "voice-demo",
+    });
+  });
+
   it("executes text-to-speech into an audio artifact", async () => {
     vi.stubEnv("ELEVENLABS_API_KEY", "test-key");
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(Buffer.from("audio"), { status: 200 })));

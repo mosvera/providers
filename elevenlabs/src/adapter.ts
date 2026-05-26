@@ -84,7 +84,7 @@ export class ElevenLabsTtsAdapter extends BaseAdapter {
   buildPayload(parameters: ProviderPayload, prompt: string, options?: EmitOptions): ProviderPayload {
     const providerOptions = options?.providerOptions ?? {};
     const payload: ProviderPayload = {
-      text: optionString(providerOptions, "text") ?? prompt,
+      text: optionString(providerOptions, "text") ?? optionString(providerOptions, "script") ?? prompt,
       model_id: optionString(providerOptions, "model_id") ?? optionString(parameters, "model_id") ?? "eleven_flash_v2_5",
       output_format: optionString(providerOptions, "output_format") ?? "mp3_44100_128",
     };

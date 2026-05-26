@@ -1,6 +1,6 @@
 {
   "name": "@mosvera/provider-elevenlabs",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Translate resolved Mosvera voice intent into ElevenLabs text-to-speech payloads.",
   "license": "Apache-2.0",
   "type": "module",
