@@ -34,16 +34,29 @@ export interface EmissionResult {
 export interface GenerationResult {
   id: string;
   images: GeneratedImage[];
+  artifacts?: GeneratedArtifact[];
   metadata: Record<string, unknown>;
 }
 
 export interface GeneratedImage {
   data: string;
   media_type: string;
+  kind?: "image";
+}
+
+export type GeneratedArtifactKind = "image" | "video" | "subtitle" | "metadata";
+
+export interface GeneratedArtifact {
+  kind: GeneratedArtifactKind;
+  media_type: string;
+  data?: string;
+  url?: string;
+  metadata?: Record<string, unknown>;
 }
 
 export interface EmitOptions {
   criticality?: Record<string, Criticality>;
+  providerOptions?: ProviderPayload;
 }
 
 export interface ExecuteOptions {

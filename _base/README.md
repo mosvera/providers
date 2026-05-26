@@ -22,6 +22,10 @@ Adapters implement three boundaries:
 
 `emit()` never calls a provider API. It is pure and snapshot-testable.
 
+Execution results keep the original image-oriented `images` field for
+compatibility and may also include generalized `artifacts`. Image providers
+return image artifacts; video providers return video artifacts.
+
 ## Lowering Tables
 
 The lowering table is the tuning surface. Rules map canonical dot paths such

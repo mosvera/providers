@@ -18,6 +18,8 @@ export type {
   EmissionResult,
   EmitOptions,
   ExecuteOptions,
+  GeneratedArtifact,
+  GeneratedArtifactKind,
   GeneratedImage,
   GenerationResult,
   JsonObject,

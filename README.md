@@ -26,6 +26,7 @@ intent into that provider's payload shape:
 npm install @mosvera/provider-openai
 npm install @mosvera/provider-flux
 npm install @mosvera/provider-sdxl
+npm install @mosvera/provider-heygen
 ```
 
 Provider packages depend on `@mosvera/runtime` and `@mosvera/provider-base`;
@@ -39,6 +40,7 @@ your package manager installs those dependencies automatically.
 | [`openai/`](./openai/) | OpenAI `gpt-image-1` | Sync SDK call, enum-coded `quality`, `moderation`, `size` enum. |
 | [`flux/`](./flux/) | BFL `flux-2-pro` | Async polling URL, computed `width` / `height`, `safety_tolerance`; `quality` is unsupported on hosted `pro`. |
 | [`sdxl/`](./sdxl/) | SDXL via Replicate | Open-weights aggregator surface, computed `width` / `height`, approximate `quality` via sampling controls, adapter-local negative prompt/refiner config; `safety` is unsupported. |
+| [`heygen/`](./heygen/) | HeyGen avatar video | Avatar-video surface, deterministic style/motion payload emission, async video status polling; returns a `video` artifact instead of images. |
 
 The deterministic boundary is `emit()`: same canonical composition, adapter,
 and manifest produce byte-identical payloads. `execute()` is the
@@ -63,6 +65,14 @@ language-neutral emission vectors mirrored from
 `sdxl/` — Stable Diffusion XL via [Replicate](https://replicate.com) lands in
 Phase 5 per ADR-0008 and ADR-0013, introducing the open-weights /
 community-aggregator axis.
+
+## Phase 6J Video Adapter
+
+`heygen/` — HeyGen avatar video extends the provider line beyond still images.
+It keeps Mosvera aesthetics provider-neutral while allowing applications to
+compile the same named aesthetic into an avatar-video payload. Live execution
+is optional and reads `HEYGEN_API_KEY`; MCP remains compile-only for provider
+payloads.
 
 ## Phase 8 Motion Adapter
 
@@ -94,6 +104,7 @@ When the maintainer pool is open to provider contributions, the path is:
 | `openai/` | OpenAI `gpt-image-1` adapter, tests, and manual execution script. |
 | `flux/` | BFL `flux-2-pro` adapter, tests, and manual execution script. |
 | `sdxl/` | SDXL via Replicate adapter, tests, and manual execution script. |
+| `heygen/` | HeyGen avatar-video adapter, tests, and manual execution script. |
 | `test/` | Cross-adapter and emission-vector tests. |
 
 ## License

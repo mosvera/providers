@@ -25,7 +25,7 @@ export abstract class BaseAdapter implements ProviderAdapter {
   abstract manifest(): CapabilityManifest;
   abstract loweringTable(): LoweringTable;
   abstract computeRegistry(): ComputeRegistry;
-  abstract buildPayload(parameters: ProviderPayload, prompt: string): ProviderPayload;
+  abstract buildPayload(parameters: ProviderPayload, prompt: string, options?: EmitOptions): ProviderPayload;
   abstract execute(payload: ProviderPayload, options?: ExecuteOptions): Promise<GenerationResult>;
 
   emit(canonical: JsonObject, options?: EmitOptions): EmissionResult {
@@ -37,7 +37,7 @@ export abstract class BaseAdapter implements ProviderAdapter {
     );
     return {
       ...emitted,
-      payload: this.buildPayload(emitted.payload, emitted.prompt),
+      payload: this.buildPayload(emitted.payload, emitted.prompt, options),
     };
   }
 }

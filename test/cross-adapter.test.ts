@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
 import { fluxAdapter } from "../flux/src/index.ts";
+import { heygenAdapter } from "../heygen/src/index.ts";
 import { openaiAdapter } from "../openai/src/index.ts";
 import { sdxlAdapter } from "../sdxl/src/index.ts";
 
@@ -96,5 +97,30 @@ describe("cross-adapter emission", () => {
     expect(openai.payload).not.toHaveProperty("negative_prompt");
     expect(flux.payload).not.toHaveProperty("negative_prompt");
     expect(sdxl.payload).toHaveProperty("negative_prompt");
+  });
+
+  it("keeps HeyGen video payload assertions separate from image adapters", () => {
+    const emission = heygenAdapter.emit(
+      {
+        voice: { headline: "A local registry demo" },
+        motion: { pace: "bouncy" },
+        palette: { background: "#f6e7cc", accent: "#d45f3f" },
+        aspect_ratio: "16:9",
+      },
+      { providerOptions: { avatar_id: "avatar-demo", script: "Hello from Mosvera." } },
+    );
+
+    expect(heygenAdapter.manifest().provider).toBe("heygen-avatar-video");
+    expect(emission.payload).toMatchObject({
+      aspect_ratio: "16:9",
+      avatar_id: "avatar-demo",
+      background: { value: "#f6e7cc" },
+      output_format: "mp4",
+      resolution: "1080p",
+      script: "Hello from Mosvera.",
+      type: "avatar",
+    });
+    expect(emission.prompt).toContain("avatar body language should feel bouncy");
+    expect(emission.prompt).toContain("headline intent: A local registry demo");
   });
 });

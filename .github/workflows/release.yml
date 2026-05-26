@@ -12,6 +12,7 @@ on:
           - provider-openai
           - provider-flux
           - provider-sdxl
+          - provider-heygen
 
 permissions:
   contents: read
