@@ -14,6 +14,23 @@ The Phase 4 architecture is recorded in
 provider pairing is recorded in
 [ADR-0008](https://github.com/mosvera/spec/blob/main/docs/decisions/0008-provider-adapter-pairing.md).
 
+## Which Package Do I Need?
+
+Install `@mosvera/provider-base` only if you are building a new provider
+adapter or using the shared emission helpers directly.
+
+Install a concrete provider package when you want to compile resolved Mosvera
+intent into that provider's payload shape:
+
+```bash
+npm install @mosvera/provider-openai
+npm install @mosvera/provider-flux
+npm install @mosvera/provider-sdxl
+```
+
+Provider packages depend on `@mosvera/runtime` and `@mosvera/provider-base`;
+your package manager installs those dependencies automatically.
+
 ## Reference Set
 
 | Package | Provider | Surface signal |

@@ -1,7 +1,7 @@
 {
   "name": "@mosvera/provider-flux",
   "version": "0.1.0",
-  "description": "Mosvera provider adapter for BFL flux-2-pro.",
+  "description": "Translate resolved Mosvera intent into BFL FLUX 2 Pro payloads.",
   "license": "Apache-2.0",
   "type": "module",
   "homepage": "https://mosvera.io",

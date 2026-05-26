@@ -1,7 +1,7 @@
 {
   "name": "@mosvera/provider-sdxl",
   "version": "0.1.0",
-  "description": "Mosvera provider adapter for SDXL via Replicate.",
+  "description": "Translate resolved Mosvera intent into SDXL payloads via Replicate.",
   "license": "Apache-2.0",
   "type": "module",
   "homepage": "https://mosvera.io",
