@@ -56,13 +56,40 @@ The deterministic boundary is `emit()`: same canonical composition, adapter,
 and manifest produce byte-identical payloads. `execute()` is the
 non-deterministic provider network boundary.
 
-Prompt-like provider options are treated as user intent, not as replacements
-for Mosvera. For prompt-only surfaces, adapters keep the supplied
-`providerOptions.prompt` or `providerOptions.prompt_text` first and append a
-`Mosvera aesthetic direction:` block compiled from the resolved aesthetic. For
-speech/avatar surfaces, adapters keep user content fields such as `text` or
-`script` as the spoken script and carry aesthetic direction through provider
-style/motion fields where available.
+## Provider Option Semantics
+
+`providerOptions` are call-time adapter configuration. They are not stored in
+Mosvera registry documents, and they do not change the resolved canonical
+aesthetic. Typical examples are a user prompt, script text, voice ID, avatar
+ID, model override, reference-image URL, timeout, or output format.
+
+User-authored content in `providerOptions` is authoritative. An adapter must
+not silently replace a supplied prompt, text, or script with Mosvera-generated
+aesthetic prose.
+
+For prompt-only surfaces, adapters keep the supplied user prompt first and
+append the compiled Mosvera direction in a visibly separated block:
+
+```text
+<user prompt>
+
+Mosvera aesthetic direction: <compiled aesthetic prompt>
+```
+
+Adapters use their provider's native option names (`prompt`, `prompt_text`,
+and similar), but the behavior is the same: the user's requested subject or
+task stays intact, and Mosvera supplies the aesthetic direction around it.
+
+For speech and avatar surfaces, adapters keep user content fields such as
+`text` or `script` as the spoken script. Mosvera direction is carried through
+provider style, motion, background, delivery, or metadata fields where the
+provider exposes them. If the provider has no such field, the adapter may add
+a clearly separated aesthetic-direction prompt, but it still must not replace
+explicit user content.
+
+Tests for new adapters should prove this convention for the provider's main
+content field and should include warnings/provenance for any aesthetic
+constructs that are approximated, dropped, or moved into prompt text.
 
 ## Testing
 

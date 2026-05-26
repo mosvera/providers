@@ -26,6 +26,13 @@ Execution results keep the original image-oriented `images` field for
 compatibility and may also include generalized `artifacts`. Image providers
 return image artifacts; video providers return video artifacts.
 
+`providerOptions` are adapter-local call-time inputs, not Mosvera registry
+data. Prompt-like options supplied by the caller are user intent and should be
+preserved. Prompt-only adapters append compiled Mosvera direction after the
+user prompt; speech and avatar adapters keep `text` or `script` as spoken
+content and map Mosvera direction into provider style/motion fields where
+available.
+
 ## Lowering Tables
 
 The lowering table is the tuning surface. Rules map canonical dot paths such
