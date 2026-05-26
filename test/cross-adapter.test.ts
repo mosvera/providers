@@ -1,8 +1,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
+import { elevenLabsTtsAdapter } from "../elevenlabs/src/index.ts";
+import { fireflyImageAdapter } from "../firefly/src/index.ts";
 import { fluxAdapter } from "../flux/src/index.ts";
+import { googleGeminiImageAdapter, googleVeoVideoAdapter } from "../google/src/index.ts";
 import { heygenAdapter } from "../heygen/src/index.ts";
+import { meshyTextTo3DAdapter } from "../meshy/src/index.ts";
 import { openaiAdapter } from "../openai/src/index.ts";
+import { runwayGen4ImageAdapter, runwayGen45VideoAdapter } from "../runway/src/index.ts";
 import { sdxlAdapter } from "../sdxl/src/index.ts";
 
 const fixtures = [
@@ -122,5 +127,59 @@ describe("cross-adapter emission", () => {
     });
     expect(emission.prompt).toContain("avatar body language should feel bouncy");
     expect(emission.prompt).toContain("headline intent: A local registry demo");
+  });
+
+  it("covers deterministic multi-modal provider emissions without executing providers", () => {
+    const canonical = {
+      subject: "a clay Mosvera helper demonstrating a local registry",
+      medium: "claymation",
+      palette: { background: "#f6e7cc", accent: "#d45f3f" },
+      imagery: { treatment: "tabletop_model" },
+      motion: { pace: "gentle" },
+      voice: { headline: "Preview, import, resolve, compile.", body: "Mosvera keeps aesthetics local." },
+      aspect_ratio: "16:9",
+      quality: "low",
+    };
+    const adapters = [
+      googleGeminiImageAdapter,
+      googleVeoVideoAdapter,
+      runwayGen4ImageAdapter,
+      runwayGen45VideoAdapter,
+      elevenLabsTtsAdapter,
+      fireflyImageAdapter,
+      meshyTextTo3DAdapter,
+    ];
+
+    expect(adapters.map((adapter) => adapter.id)).toEqual([
+      "google-gemini-image",
+      "google-veo-video",
+      "runway-gen4-image",
+      "runway-gen45-video",
+      "elevenlabs-tts",
+      "adobe-firefly-image",
+      "meshy-text-to-3d",
+    ]);
+
+    for (const adapter of adapters) {
+      const emission = adapter.emit(canonical, {
+        providerOptions: {
+          duration: 5,
+          duration_seconds: 5,
+          script: "A short Mosvera demo.",
+          text: "A short Mosvera demo.",
+          voice_id: "voice-demo",
+        },
+      });
+      expect(emission.prompt.length).toBeGreaterThan(10);
+      expect(Object.keys(emission.payload)).toEqual(Object.keys(emission.payload).sort());
+    }
+
+    expect(googleGeminiImageAdapter.emit(canonical).payload).toHaveProperty("generationConfig");
+    expect(googleVeoVideoAdapter.emit(canonical).payload).toHaveProperty("parameters");
+    expect(runwayGen4ImageAdapter.emit(canonical).payload).toHaveProperty("ratio");
+    expect(runwayGen45VideoAdapter.emit(canonical).payload).toHaveProperty("duration");
+    expect(elevenLabsTtsAdapter.emit(canonical, { providerOptions: { voice_id: "voice-demo" } }).payload).toHaveProperty("voice_id");
+    expect(fireflyImageAdapter.emit(canonical).payload).toHaveProperty("referenceBlobs");
+    expect(meshyTextTo3DAdapter.emit(canonical).payload).toHaveProperty("target_formats");
   });
 });

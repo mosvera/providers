@@ -10,11 +10,17 @@
     "openai",
     "flux",
     "sdxl",
-    "heygen"
+    "heygen",
+    "google",
+    "runway",
+    "elevenlabs",
+    "firefly",
+    "meshy"
   ],
   "scripts": {
     "build": "npm run build --workspaces",
     "ci": "npm run build && npm run typecheck && npm run test:workspaces && npm run test:providers",
+    "smoke:live": "node scripts/smoke-live.mjs",
     "test": "npm run test:workspaces && npm run test:providers",
     "test:providers": "vitest run test",
     "test:workspaces": "npm run test --workspaces",

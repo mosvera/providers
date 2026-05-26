@@ -27,6 +27,11 @@ npm install @mosvera/provider-openai
 npm install @mosvera/provider-flux
 npm install @mosvera/provider-sdxl
 npm install @mosvera/provider-heygen
+npm install @mosvera/provider-google
+npm install @mosvera/provider-runway
+npm install @mosvera/provider-elevenlabs
+npm install @mosvera/provider-firefly
+npm install @mosvera/provider-meshy
 ```
 
 Provider packages depend on `@mosvera/runtime` and `@mosvera/provider-base`;
@@ -41,6 +46,11 @@ your package manager installs those dependencies automatically.
 | [`flux/`](./flux/) | BFL `flux-2-pro` | Async polling URL, computed `width` / `height`, `safety_tolerance`; `quality` is unsupported on hosted `pro`. |
 | [`sdxl/`](./sdxl/) | SDXL via Replicate | Open-weights aggregator surface, computed `width` / `height`, approximate `quality` via sampling controls, adapter-local negative prompt/refiner config; `safety` is unsupported. |
 | [`heygen/`](./heygen/) | HeyGen avatar video | Avatar-video surface, deterministic style/motion payload emission, async video status polling; returns a `video` artifact instead of images. |
+| [`google/`](./google/) | Google Gemini image and Veo video | One package with still-image and short-video adapters; optional execution reads `GOOGLE_GEMINI_API_KEY` or `GOOGLE_API_KEY`. |
+| [`runway/`](./runway/) | Runway Gen-4 image and Gen-4.5 video | Image/reference and short-video payload adapters with async task polling; optional execution reads `RUNWAY_API_KEY`. |
+| [`elevenlabs/`](./elevenlabs/) | ElevenLabs TTS | Audio narration payloads; optional execution reads `ELEVENLABS_API_KEY` and keeps `voice_id` in provider configuration. |
+| [`firefly/`](./firefly/) | Adobe Firefly Image | Firefly image payloads with token/client credential support; optional execution reads Firefly environment credentials. |
+| [`meshy/`](./meshy/) | Meshy text-to-3D | Text-to-3D preview/refine payloads; optional execution reads `MESHY_API_KEY`. |
 
 The deterministic boundary is `emit()`: same canonical composition, adapter,
 and manifest produce byte-identical payloads. `execute()` is the
@@ -74,10 +84,17 @@ compile the same named aesthetic into an avatar-video payload. Live execution
 is optional and reads `HEYGEN_API_KEY`; MCP remains compile-only for provider
 payloads.
 
-## Phase 8 Motion Adapter
+## Phase 6L Multi-Modal Expansion
 
-`runway/` — Runway Gen-4 lands in Phase 8 alongside Mosvera's introduction of
-motion / temporal primitives.
+`google/`, `runway/`, `elevenlabs/`, `firefly/`, and `meshy/` expand the
+reference set across image, video, audio, and 3D model surfaces. The shared
+provider contract now allows generated artifacts with `image`, `video`,
+`audio`, and `model_3d` kinds while keeping the original `images` field for
+compatibility with existing image adapters.
+
+Live execution remains optional and local. Manual smoke scripts read provider
+credentials from environment variables, write generated media only to ignored
+`test/output/` directories, and are never part of CI.
 
 ## Exclusion Policy
 
@@ -105,6 +122,11 @@ When the maintainer pool is open to provider contributions, the path is:
 | `flux/` | BFL `flux-2-pro` adapter, tests, and manual execution script. |
 | `sdxl/` | SDXL via Replicate adapter, tests, and manual execution script. |
 | `heygen/` | HeyGen avatar-video adapter, tests, and manual execution script. |
+| `google/` | Google Gemini image and Veo short-video adapters, tests, and manual execution script. |
+| `runway/` | Runway Gen-4 image and Gen-4.5 short-video adapters, tests, and manual execution script. |
+| `elevenlabs/` | ElevenLabs TTS adapter, tests, and manual execution script. |
+| `firefly/` | Adobe Firefly image adapter, tests, and manual execution script. |
+| `meshy/` | Meshy text-to-3D adapter, tests, and manual execution script. |
 | `test/` | Cross-adapter and emission-vector tests. |
 
 ## License

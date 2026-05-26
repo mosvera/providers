@@ -44,7 +44,7 @@ export interface GeneratedImage {
   kind?: "image";
 }
 
-export type GeneratedArtifactKind = "image" | "video" | "subtitle" | "metadata";
+export type GeneratedArtifactKind = "image" | "video" | "audio" | "model_3d" | "subtitle" | "metadata";
 
 export interface GeneratedArtifact {
   kind: GeneratedArtifactKind;
