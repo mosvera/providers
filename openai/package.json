@@ -1,6 +1,6 @@
 {
   "name": "@mosvera/provider-openai",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Translate resolved Mosvera intent into OpenAI gpt-image-1 payloads.",
   "license": "Apache-2.0",
   "type": "module",
@@ -48,8 +48,8 @@
     "node": ">=20"
   },
   "dependencies": {
-    "@mosvera/runtime": "^0.1.0",
-    "@mosvera/provider-base": "^0.1.0",
+    "@mosvera/runtime": "^0.1.1",
+    "@mosvera/provider-base": "^0.1.1",
     "openai": "^6.9.1"
   },
   "devDependencies": {

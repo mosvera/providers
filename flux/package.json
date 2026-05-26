@@ -1,6 +1,6 @@
 {
   "name": "@mosvera/provider-flux",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Translate resolved Mosvera intent into BFL FLUX 2 Pro payloads.",
   "license": "Apache-2.0",
   "type": "module",
@@ -49,8 +49,8 @@
     "node": ">=20"
   },
   "dependencies": {
-    "@mosvera/runtime": "^0.1.0",
-    "@mosvera/provider-base": "^0.1.0"
+    "@mosvera/runtime": "^0.1.1",
+    "@mosvera/provider-base": "^0.1.1"
   },
   "devDependencies": {
     "typescript": "^5.7.2",
