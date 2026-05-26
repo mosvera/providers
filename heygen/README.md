@@ -55,4 +55,6 @@ npm run execute:manual -w @mosvera/provider-heygen
 ```
 
 The manual script writes metadata and any downloaded video to
-`heygen/test/output/`. That directory is ignored by git.
+`heygen/test/output/`. That directory is ignored by git. Smoke scripts are
+kept short by default and `HEYGEN_SCRIPT` is rejected above 45 words so test
+videos stay under roughly 20 seconds.

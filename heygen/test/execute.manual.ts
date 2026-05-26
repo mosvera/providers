@@ -12,6 +12,8 @@ import { heygenAdapter } from "../src/index.ts";
 const here = dirname(fileURLToPath(import.meta.url));
 const exampleDir = join(here, "..", "..", "examples", "cinematic-editorial");
 const outputDir = join(here, "output");
+const DEFAULT_SMOKE_SCRIPT = "Mosvera HeyGen smoke test complete.";
+const MAX_SMOKE_WORDS = 45;
 
 function readJson(path: string): JsonObject {
   return JSON.parse(readFileSync(join(exampleDir, path), "utf8")) as JsonObject;
@@ -21,6 +23,15 @@ async function download(url: string, path: string): Promise<void> {
   const response = await fetch(url);
   if (!response.ok) throw new Error(`HeyGen video download failed: ${response.status} ${response.statusText}`);
   writeFileSync(path, Buffer.from(await response.arrayBuffer()));
+}
+
+function smokeScript(): string {
+  const script = process.env.HEYGEN_SCRIPT ?? DEFAULT_SMOKE_SCRIPT;
+  const words = script.trim().split(/\s+/).filter(Boolean);
+  if (words.length > MAX_SMOKE_WORDS) {
+    throw new Error(`HEYGEN_SCRIPT must stay under ${MAX_SMOKE_WORDS} words for smoke tests; received ${words.length}`);
+  }
+  return script;
 }
 
 async function main(): Promise<void> {
@@ -49,7 +60,7 @@ async function main(): Promise<void> {
   const canonical = resolveComposition(readJson("composition.json"), registry, strategies);
   const providerOptions: Record<string, unknown> = {
     avatar_id: avatarId,
-    script: process.env.HEYGEN_SCRIPT ?? "This is a Mosvera HeyGen provider smoke test.",
+    script: smokeScript(),
     title: process.env.HEYGEN_TITLE ?? "Mosvera HeyGen smoke test",
   };
   if (process.env.HEYGEN_VOICE_ID !== undefined) providerOptions.voice_id = process.env.HEYGEN_VOICE_ID;
