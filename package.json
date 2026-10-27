@@ -27,9 +27,9 @@
     "typecheck": "npm run typecheck --workspaces"
   },
   "devDependencies": {
-    "@types/node": "^22.10.2",
+    "@types/node": "^26.6.5",
     "tsx": "^4.19.2",
-    "typescript": "^5.7.2",
-    "vitest": "^4.1.7"
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.5"
   }
 }
